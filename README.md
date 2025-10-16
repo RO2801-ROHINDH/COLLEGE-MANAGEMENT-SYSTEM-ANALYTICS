@@ -3,6 +3,7 @@
 This project demonstrates a Power BI Dashboard built on top of SQL Server data for student performance and course tracking.
 
 Problem Statement 
+
 The college administration team wants to improve operational efficiency  by analyzing their existing data. Currently, the data is managed partially in spreadsheets and partially manually., making it difficult to identify the progress . In ability in reading data properly is hindering the management in improving.
 
 Dataset
