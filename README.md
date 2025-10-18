@@ -9,13 +9,19 @@ The college administration team wants to improve operational efficiency by analy
 Dataset
 
 The college management needs four key datasets
+
 •	Courses Table – provides details of courses available
+
 •	Student Table – Students who are enrolled In college
+
 •	Faculty Table – The Faculty present in the college
+
 •	Enrollments Table – Enrollment details
 
 Tools Used
 
 •	Microsoft Power BI
+
 •	SQL Server
+
 •	Excel (for sample data)
