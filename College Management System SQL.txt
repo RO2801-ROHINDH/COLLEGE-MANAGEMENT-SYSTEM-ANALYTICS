@@ -1,0 +1,107 @@
+1) Get the average grade for each student (considering A=4, B=3, C=2, D=1, F=0).​
+
+
+SELECT
+    s.StudentID,s.Name AS StudentName,
+    AVG(CASE e.Grade
+        WHEN 'A' THEN 4
+        WHEN 'B' THEN 3
+        WHEN 'C' THEN 2
+        WHEN 'D' THEN 1
+        WHEN 'F' THEN 0
+       -- ELSE NULL -- Handle cases where the grade might not be A, B, C, D, or F
+    END) AS AverageGrade
+FROM
+    STUDENTS s
+INNER JOIN
+    ENROLLMENTS e ON s.StudentID = e.StudentID
+GROUP BY
+    s.StudentID;
+
+---------------------------------------------------------------------------------
+
+2) List all instructors who are teaching a course with fewer than 3 students enrolled.​
+
+SELECT
+    F.faculty_id,F.first_name || ' ' || F.last_name AS full_name,
+    C.CourseName,C.CourseID,F.department,F.email,
+    COUNT(E.StudentID) AS NumberOfStudentsEnrolled
+FROM
+    FACULTY F
+INNER JOIN
+    COURSES C ON F.faculty_id = C.InstructorID
+LEFT JOIN 
+    ENROLLMENTS E ON C.CourseID = E.CourseID
+GROUP BY
+    F.faculty_id, F.first_name, F.last_name, C.CourseName
+HAVING
+    COUNT(E.StudentID) < 3;
+
+---------------------------------------------------------------------------------
+
+
+3) Find the total number of credits each student has earned, grouped by their major.​
+
+SELECT
+    S.Major,
+	S.StudentID,
+    S.Name AS StudentName,
+	E.Grade,
+    SUM(C.Credits) AS TotalCreditsEarned
+FROM
+    STUDENTS S
+INNER JOIN
+    ENROLLMENTS E ON S.StudentID = E.StudentID
+INNER JOIN
+    COURSES C ON E.CourseID = C.CourseID
+GROUP BY
+    S.Major, S.Name
+ORDER BY
+S.StudentID;
+
+---------------------------------------------------------------------------------
+
+
+4) Find the average salary of instructors in each department.​
+
+SELECT
+    department,
+    AVG(Salary) AS AverageSalary
+FROM FACULTY
+GROUP BY department;
+
+---------------------------------------------------------------------------------
+
+
+5) List all courses that are taught by more than one instructor
+
+SELECT CourseID, CourseName
+FROM COURSES
+GROUP BY CourseID, CourseName
+HAVING COUNT(DISTINCT InstructorID) > 1;
+
+---------------------------------------------------------------------------------
+
+
+6) List the top 3 students with the highest number of credits earned
+
+WITH StudentTotalCredits AS (
+  SELECT
+    s.Name AS StudentName,
+    SUM(c.Credits) AS TotalCredits
+  FROM STUDENTS s
+  JOIN ENROLLMENTS e
+    ON s.StudentID = e.StudentID
+  JOIN COURSES c
+    ON e.CourseID = c.CourseID
+  GROUP BY
+    s.Name
+)
+SELECT
+  StudentName,
+  TotalCredits
+FROM StudentTotalCredits
+ORDER BY
+  TotalCredits DESC
+LIMIT 3;
+
